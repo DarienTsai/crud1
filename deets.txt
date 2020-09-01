@@ -1,0 +1,16 @@
+Display:
+-Task
+-Status
+-Remove Button
+
+Create Form:
+- New task
+
+Schema
+- tasks
+  - name
+  - key to status
+- status
+  - not started
+  - started
+  - finished
