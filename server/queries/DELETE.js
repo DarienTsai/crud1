@@ -1,0 +1,1 @@
+module.exports = function(id){ return 'DELETE FROM tab WHERE id=' + id;}

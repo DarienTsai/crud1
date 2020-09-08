@@ -1,0 +1,1 @@
+module.exports = function(param){ return 'INSERT INTO tab (' + param + ', "not started")';}
