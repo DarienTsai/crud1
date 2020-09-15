@@ -9,7 +9,8 @@ class App extends React.Component {
     super();
 
     this.state = {
-      'create': ""
+      entry: "",
+      data: null
     };
   }
 
@@ -19,13 +20,16 @@ class App extends React.Component {
   }
 
   handleType = (e) => {
-    this.setState({'create': e.target.value});
+    this.setState({entry: e.target.value});
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({'create': ''});
-    Post({task: this.state.create});
+    this.setState({entry: ''});
+
+    if (this.state.entry !== ""){
+      Post({task: this.state.entry});
+    }
   }
 
   render(){
@@ -52,7 +56,7 @@ class App extends React.Component {
 
         <form>
 
-          <input type="text" placeholder="New Task" onChange={this.handleType} value={this.state.create}/>
+          <input type="text" placeholder="New Task" onChange={this.handleType} value={this.state.entry}/>
           <button onClick={this.handleSubmit}>Create</button>
         
         </form>
@@ -63,7 +67,8 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    Get();
+    // Load in db
+    this.setState({data: Get()});
   }
 
 }
