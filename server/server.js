@@ -19,6 +19,7 @@ const connection = mysql.createConnection({
   password: process.env.PASS,
   database: process.env.DB,
 });
+connection.connect();
 
 /* Middleware */
 app.use(bodyParser.json());
@@ -29,56 +30,48 @@ app.use(cors());
 
 // Create
 app.post('/', function(req, res, next){
-  connection.connect();
 
-  connection.query(POST(req.body.id), function(err, rows, fields){
+  console.log(req.body);
+  connection.query(POST(req.body.task), function(err, rows, fields){
     if (err) throw err;
     console.log(rows);
     console.log(fields);
+    
   });
-  connection.end();
 
   res.status(200).json({"text": "pos"});
 });
 
 // Read
 app.get('/', function( req, res, next ){
-  connection.connect();
 
   connection.query(GET, function(err, rows, fields){
     if (err) throw err;
-    console.log(rows);
-    console.log(fields);
+    res.status(200).json({payload: rows});
   });
-  connection.end();
 
-  res.status(200).json({"text": "gottem"});
 });
 
 // Update
 app.set('/', function( req, res, next ){
-  connection.connect();
 
   connection.query(UPDATE(req.body.id), function(err, rows, fields){
     if (err) throw err;
     console.log(rows);
     console.log(fields);
   });
-  connection.end();
 
   res.status(200).json({"text": "set"});
 });
 
 // Delete
 app.delete('/', function( req, res, next ){
-  connection.connect();
 
   connection.query(DELETE(req.body.id), function(err, rows, fields){
     if (err) throw err;
     console.log(rows);
     console.log(fields);
   });
-  connection.end();
 
   res.status(200).json({"text": "del"});
 });

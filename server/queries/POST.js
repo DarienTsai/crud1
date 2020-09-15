@@ -1,1 +1,1 @@
-module.exports = function(param){ return 'INSERT INTO tab (' + param + ', "not started")';}
+module.exports = function(param){ return 'INSERT INTO tab (task, stat) VALUES (\'' + param + '\', 0);';}
