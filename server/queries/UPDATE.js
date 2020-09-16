@@ -1,1 +1,1 @@
-module.exports = function(id){ return 'UPDATE tab SET status=\"Started\" WHERE id=' + id;}
+module.exports = function(id, stat){ return 'UPDATE tab SET stat = ' + stat + ' WHERE id=' + id;}

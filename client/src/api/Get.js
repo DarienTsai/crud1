@@ -1,13 +1,13 @@
 // Get all tasks
-module.exports = function(task){
+module.exports = async function(){
 
   let settings = {
-    method: "GET",
-    mode: "cors"
+    "method": "GET",
+    "mode": "cors"
   }
 
-  fetch('http://localhost:5000/', settings)
-  .then(res => res.json())
-  .then(data => console.log(data));
+  return await fetch('http://localhost:5000/', settings)
+              .then(res => res.json())
+              .then(data => {return data.payload})
 
 }

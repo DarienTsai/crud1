@@ -1,5 +1,5 @@
 // Create a new task
-module.exports = function(task){
+module.exports = async function(task){
 
   let settings = {
     "method": "POST",
@@ -10,8 +10,8 @@ module.exports = function(task){
     "body": JSON.stringify(task)
   }
 
-  fetch('http://localhost:5000/', settings)
+  return await fetch('http://localhost:5000/', settings)
   .then(res => res.json())
-  .then(data => console.log(data));
+  .then(data => {return data.payload});
 
 }

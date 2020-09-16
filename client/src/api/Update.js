@@ -1,13 +1,17 @@
 // Update a task status
-module.exports = function(data){
+module.exports = async function(id, status){
 
   let settings = {
-    method: "GET",
-    mode: "cors"
+    "method": 'PUT',
+    "mode": "cors",
+    "headers": {
+      "Content-type": "application/json"
+    },
+    "body": JSON.stringify({id: id, status: status})
   }
 
-  fetch('http://localhost:5000/', settings)
-  .then(res => res.json())
-  .then(data => console.log(data));
+  return await fetch('http://localhost:5000/', settings)
+              .then(res => res.json())
+              .then(data => {return data.payload});
 
 }

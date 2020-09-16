@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const GET = require('./queries/GET');
 const POST = require('./queries/POST');
 const UPDATE = require('./queries/UPDATE');
-const DELETE = require('./queries/UPDATE');
+const DELETE = require('./queries/DELETE');
 
 
 const app = express();
@@ -31,15 +31,15 @@ app.use(cors());
 // Create
 app.post('/', function(req, res, next){
 
-  console.log(req.body);
   connection.query(POST(req.body.task), function(err, rows, fields){
     if (err) throw err;
-    console.log(rows);
-    console.log(fields);
-    
+    console.log(rows);    
   });
 
-  res.status(200).json({"text": "pos"});
+  connection.query(GET, function(err, rows, fields){
+    if (err) throw err;
+    res.status(200).json({payload: rows});
+  });
 });
 
 // Read
@@ -53,27 +53,31 @@ app.get('/', function( req, res, next ){
 });
 
 // Update
-app.set('/', function( req, res, next ){
+app.put('/', function( req, res, next ){
 
-  connection.query(UPDATE(req.body.id), function(err, rows, fields){
+  connection.query(UPDATE(req.body.id, req.body.status), function(err, rows, fields){
     if (err) throw err;
     console.log(rows);
     console.log(fields);
   });
 
-  res.status(200).json({"text": "set"});
+  connection.query(GET, function(err, rows, fields){
+    if (err) throw err;
+    res.status(200).json({payload: rows});
+  });
 });
 
 // Delete
 app.delete('/', function( req, res, next ){
-
   connection.query(DELETE(req.body.id), function(err, rows, fields){
     if (err) throw err;
     console.log(rows);
-    console.log(fields);
   });
 
-  res.status(200).json({"text": "del"});
+  connection.query(GET, function(err, rows, fields){
+    if (err) throw err;
+    res.status(200).json({payload: rows});
+  });
 });
 
 

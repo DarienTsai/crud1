@@ -1,6 +1,9 @@
 import React from 'react';
+import Row from './Row';
 import Get from '../api/Get';
 import Post from '../api/Post';
+import Delete from '../api/Delete';
+import Update from '../api/Update';
 
 /* Displays main contents of db and form to create */
 class App extends React.Component {
@@ -10,29 +13,40 @@ class App extends React.Component {
 
     this.state = {
       entry: "",
-      data: null
+      data: []
     };
   }
 
-  reload = (e) => {
-    console.log('reload');
-    Get();
+  reload = async () => {
+    this.setState({data: await Get()});
+  }
+
+  remove = async (idx) => {
+    this.setState({data: await Delete(idx)});
+  }
+
+  update = async (idx, status) => {
+    Update(idx, status);
+    this.setState({data: await Update(idx, status)});
   }
 
   handleType = (e) => {
     this.setState({entry: e.target.value});
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     this.setState({entry: ''});
 
     if (this.state.entry !== ""){
-      Post({task: this.state.entry});
+      this.setState({data: await Post({task: this.state.entry})});
     }
   }
 
   render(){
+  let idx = 0;
+  let rows = this.state.data.map((task) => { return <Row data={task} key={idx} idx={idx++} del={this.remove} up={this.update}/>; });
+
     return (
 
       <div className="App">
@@ -48,6 +62,8 @@ class App extends React.Component {
           </thead>
 
           <tbody>
+
+            {rows}
 
           </tbody>
   
@@ -66,9 +82,9 @@ class App extends React.Component {
     );
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     // Load in db
-    this.setState({data: Get()});
+    this.reload();
   }
 
 }
